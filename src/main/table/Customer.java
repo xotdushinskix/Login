@@ -1,5 +1,7 @@
 package table;
 
+import com.sun.istack.internal.NotNull;
+
 import javax.persistence.*;
 
 /**
@@ -14,15 +16,19 @@ public class Customer {
     @Column(name = "customer_id")
     private int customerId;
 
+    @NotNull
     @Column(name = "first_name")
     private String firstName;
 
+    @NotNull
     @Column(name = "last_name")
     private String lastName;
 
+    @NotNull
     @Column(name = "login_email", unique = true)
     private String loginEmail;
 
+    @NotNull
     @Column(name = "password")
     private String password;
 

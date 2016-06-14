@@ -13,6 +13,6 @@
     <title></title>
 </head>
 <body>
-  Hi, <c:out value="${firstName}"/> you are successfully registered! Please, <a href="http://localhost:8080/login.jsp">login</a>.
+  Hi, <c:out value="${firstName}"/> you are successfully registered! Please, <a href="http://localhost:8081/login.jsp">login</a>.
 </body>
 </html>

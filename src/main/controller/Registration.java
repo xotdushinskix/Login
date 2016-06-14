@@ -21,6 +21,8 @@ public class Registration extends Forward {
     private CustomerDao customerDao = factory.getCustomerDao();
     private Customer customer;
     private String SUCCESS_REG = "/successRegistration.jsp";
+    private String EMPTY_REGISTRATION = "emptyRegistration.jsp";
+    private String EMPTY_ANY_FIELD_IN_REGISTRATION = "/anyEmptyFieldInRegistration.jsp";
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -31,18 +33,28 @@ public class Registration extends Forward {
         String eMail = request.getParameter("email_password");
         String password = request.getParameter("password");
 
-        customer = new Customer();
-        customer.setFirstName(firstName);
-        customer.setLastName(lastName);
-        customer.setLoginEmail(eMail);
-        customer.setPassword(password);
+        if (firstName.length() == 0 || lastName.length() == 0 || eMail.length() == 0 || password.length() == 0) {
+            forward(EMPTY_ANY_FIELD_IN_REGISTRATION, request, response);
 
-        try {
-            customerDao.addCustomer(customer);
-            request.setAttribute("firstName", customer.getFirstName());
-            super.forward(SUCCESS_REG, request, response);
-        } catch (SQLException e) {
-            e.printStackTrace();
+        } else {
+            try {
+                customer = new Customer();
+                customer.setFirstName(firstName);
+                customer.setLastName(lastName);
+                customer.setLoginEmail(eMail);
+                customer.setPassword(password);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+                super.forward(EMPTY_REGISTRATION, request, response);
+            }
+
+            try {
+                customerDao.addCustomer(customer);
+                request.setAttribute("firstName", customer.getFirstName());
+                super.forward(SUCCESS_REG, request, response);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
 
     }
